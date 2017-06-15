@@ -9,11 +9,10 @@ while read SAMPLE_ID; do
   # https://gist.github.com/alyssafrazee/9376121
   # creates the appropiate file names for each
   # fastq PE set
-  fq1=$project_name/data/${SAMPLE_ID}_1.fastq.gz
-  fq2=$project_name/data/${SAMPLE_ID}_2.fastq.gz
-  script_file=$project_name/alignments/scripts/hisat2_${SAMPLE_ID}.sh
-  sam_file=$project_name/alignments/${SAMPLE_ID}.sam
 
+  script_file=$project_name/assemblies/scripts/c_${SAMPLE_ID}.sh
+  sam_file=$project_name/alignments/${SAMPLE_ID}.sam
+  bam_file=$project_name/assemblies/${SAMPLE_ID}.bam
   # This is all the text being put into the file
   touch $script_file
   cat > $script_file <<EOF
@@ -21,29 +20,18 @@ while read SAMPLE_ID; do
 #
 #SBATCH -N 1 # Ensure that all cores are on one machine
 #SBATCH -t 3-00:00 # Runtime in D-HH:MM
-#SBATCH -J hisat2_${SAMPLE_ID}
+#SBATCH -J samtools_${SAMPLE_ID}
 #SBATCH -o /ihome/dtaylor/del53/slurm_output_logs/slurm.%N.%j.out
 #SBATCH -e /ihome/dtaylor/del53/slurm_error_logs/slurm.%N.%j.err
 #SBATCH --cpus-per-task=16 # Request that ncpus be allocated per process.
 #SBATCH --mem=230g # Memory pool for all cores (see also --mem-per-cpu)
 
-module load HISAT2/2.0.5
+module load samtools/1.3.1-gcc5.2.0
 
-hisat2 -p 16 --dta -x $hisat2_refs -1 $fq1 -2 $fq2 -S $sam_file
-
+samtools sort -@ 16 -o $bam_file $sam_file
 
 EOF
 
 qsub $script_file
 
 done < $sample_ids
-
-
-
-
-#data_dir=$1/data
-#output_dir=$1/alignments/sample
-#while read SAMPLE_ID; do
-#  cat > /ProjectName/alignments/scripts/tophat_${SAMPLE_ID}.sh <<EOF
-
-#EOF

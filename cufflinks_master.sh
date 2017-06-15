@@ -20,7 +20,7 @@ while read SAMPLE_ID; do
 #
 #SBATCH -N 1 # Ensure that all cores are on one machine
 #SBATCH -t 3-00:00 # Runtime in D-HH:MM
-#SBATCH -J hisat2_${SAMPLE_ID}
+#SBATCH -J cufflinks${SAMPLE_ID}
 #SBATCH -o /ihome/dtaylor/del53/slurm_output_logs/slurm.%N.%j.out
 #SBATCH -e /ihome/dtaylor/del53/slurm_error_logs/slurm.%N.%j.err
 #SBATCH --cpus-per-task=16 # Request that ncpus be allocated per process.
