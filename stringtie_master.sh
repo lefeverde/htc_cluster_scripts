@@ -44,6 +44,6 @@ $cmd_string -p 16 -G $ref_gtf -o $out_gtf -l ${SAMPLE_ID} $bam_in
 
 EOF
 
-#qsub $script_file
+qsub $script_file
 
 done < $sample_ids
