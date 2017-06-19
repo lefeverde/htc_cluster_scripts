@@ -33,7 +33,7 @@ while read SAMPLE_ID; do
 
 module load HISAT2/2.0.5
 
-hisat2 -p 16 --dta -x $cur_ref -1 $fq1 -2 $fq2 -S $sam_file
+hisat2 -p 16 --dta -x $cur_ref/hg38_tran -1 $fq1 -2 $fq2 -S $sam_file
 
 
 EOF
