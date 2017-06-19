@@ -2,6 +2,7 @@
 
 project_name=$1
 sample_ids=$2
+cur_ref=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_indexed_refs/
 #hisat2_refs=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_refs/hg38_tran
 # TODO figure out easy way to
 # input fq1 and fq2 without
@@ -32,7 +33,7 @@ while read SAMPLE_ID; do
 
 module load HISAT2/2.0.5
 
-hisat2 -p 16 --dta -x $HISAT2_REFS -1 $fq1 -2 $fq2 -S $sam_file
+hisat2 -p 16 --dta -x $cur_ref -1 $fq1 -2 $fq2 -S $sam_file
 
 
 EOF
@@ -40,13 +41,3 @@ EOF
 qsub $script_file
 
 done < $sample_ids
-
-
-
-
-#data_dir=$1/data
-#output_dir=$1/alignments/sample
-#while read SAMPLE_ID; do
-#  cat > /ProjectName/alignments/scripts/tophat_${SAMPLE_ID}.sh <<EOF
-
-#EOF
