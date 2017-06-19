@@ -9,7 +9,7 @@ sample_ids=$2
 cur_module=StringTie
 cmd_string=stringtie
 
-ref_gtf=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/gene_annots/hg38_UCSC_Genes.gtf
+ref_gtf=hisat2_refs=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_indexed_refs/hg38_ucsc.annotated.gtf
 
 while read SAMPLE_ID; do
   # TODO add some comments

@@ -2,7 +2,7 @@
 
 project_name=$1
 sample_ids=$2
-cur_ref=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_indexed_refs/
+cur_ref=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_indexed_refs
 #hisat2_refs=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_refs/hg38_tran
 # TODO figure out easy way to
 # input fq1 and fq2 without

@@ -2,7 +2,6 @@
 
 project_name=$1
 sample_ids=$2
-hisat2_refs=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_refs/hg38_tran
 
 while read SAMPLE_ID; do
   # idea for master script was taken from:
