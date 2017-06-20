@@ -1,7 +1,7 @@
 #!/bin/bash
 
 project_name=$1
-merge_list=$2
+sample_ids=$2
 
 # Trying to make
 # boiler plate code less
@@ -29,7 +29,6 @@ while read SAMPLE_ID; do
   # This is all the text being put into the file
   touch $script_file
   cat > $script_file <<EOF
-
 #!/bin/bash
 #
 #SBATCH -N 1 # Ensure that all cores are on one machine
