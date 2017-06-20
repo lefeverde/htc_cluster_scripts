@@ -48,3 +48,5 @@ $cmd_string -e -B -p 8 -G $merged_gtf -o $out_abundance_gtf
 EOF
 
 qsub $script_file
+
+done < $sample_ids
