@@ -11,7 +11,7 @@ cmd_string=stringtie
 
 script_file=$project_name/assemblies/scripts/stringtie_merged.sh
 ref_gtf=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_indexed_refs/hg38_ucsc.annotated.gtf
-out_gtf=${project_name}_stringtie_merged.gtf
+out_gtf=${project_name}/assemblies/${project_name}_stringtie_merged.gtf
 
 cat > $script_file <<EOF
 #!/bin/bash
@@ -30,4 +30,4 @@ $cmd_string --merge -p 8 -G $ref_gtf -o $out_gtf $bam_in
 
 EOF
 
-#qsub $script_file
+qsub $script_file

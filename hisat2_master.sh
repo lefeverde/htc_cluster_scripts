@@ -17,6 +17,7 @@ while read SAMPLE_ID; do
   fq2=$project_name/data/${SAMPLE_ID}_2.fastq.gz
   script_file=$project_name/alignments/scripts/hisat2_${SAMPLE_ID}.sh
   sam_file=$project_name/alignments/${SAMPLE_ID}.sam
+  bam_file=$project_name/alignments/${SAMPLE_ID}.bam
 
   # This is all the text being put into the file
   touch $script_file
@@ -32,9 +33,10 @@ while read SAMPLE_ID; do
 #SBATCH --mem=230g # Memory pool for all cores (see also --mem-per-cpu)
 
 module load HISAT2/2.0.5
+module load samtools/1.3.1-gcc5.2.0
 
 hisat2 -p 16 --dta -x $cur_ref/hg38_tran -1 $fq1 -2 $fq2 -S $sam_file
-
+samtools sort -@ 16 -m 2G -o $bam_file $sam_file
 
 EOF
 
