@@ -41,7 +41,7 @@ while read SAMPLE_ID; do
 
 module load $cur_module
 
-$cmd_string -e -B -p 8 -G $merged_gtf -o $out_abundance_gtf
+$cmd_string -e -B -p 8 -G $merged_gtf -o $out_abundance_gtf $bam_file
 
 
 EOF
