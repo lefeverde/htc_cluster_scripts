@@ -2,6 +2,8 @@
 
 project_name=$1
 sample_ids=$2
+core_num=${3:-8}
+mem_num=${4:-115}
 
 # Trying to make
 # boiler plate code less
@@ -36,12 +38,12 @@ while read SAMPLE_ID; do
 #SBATCH -J ${cur_module}
 #SBATCH -o /ihome/dtaylor/del53/slurm_output_logs/out_${cur_module}_%N_%j
 #SBATCH -e /ihome/dtaylor/del53/slurm_error_logs/err_${cur_module}_%N_%j
-#SBATCH --cpus-per-task=8 # Request that ncpus be allocated per process.
-#SBATCH --mem=115g # Memory pool for all cores (see also --mem-per-cpu)
+#SBATCH --cpus-per-task=1 # Request that ncpus be allocated per process.
+#SBATCH --mem=${mem_num}g # Memory pool for all cores (see also --mem-per-cpu)
 
 module load $cur_module
 
-$cmd_string -e -B -p 8 -G $merged_gtf -o $out_abundance_gtf $bam_file
+$cmd_string -e -B -p $core_num -G $merged_gtf -o $out_abundance_gtf $bam_file
 
 
 EOF

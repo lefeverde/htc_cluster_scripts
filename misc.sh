@@ -1,3 +1,3 @@
 while read i; do
-  qdel ${i}
-done < $ jobs
+  scancel ${i}
+done < jobs
