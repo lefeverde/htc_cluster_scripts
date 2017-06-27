@@ -20,11 +20,17 @@ while read SAMPLE_ID; do
   # https://gist.github.com/alyssafrazee/9376121
   # creates the appropiate file names for each
   # fastq PE set
-  fq1=$project_name/data/${SAMPLE_ID}_1.fastq.gz
-  fq2=$project_name/data/${SAMPLE_ID}_2.fastq.gz
-  script_file=$project_name/alignments/scripts/hisat2_${SAMPLE_ID}.sh
-  sam_file=$project_name/alignments/${SAMPLE_ID}.sam
-  bam_file=$project_name/alignments/${SAMPLE_ID}.bam
+  fastq_dir=${PWD}/${project_name}/data/ # breakin fp and file
+
+  fq1=${SAMPLE_ID}_1.fastq.gz
+  fq2=${SAMPLE_ID}_2.fastq.gz
+
+  script_file=${PWD}/$project_name/alignments/scripts/hisat2_${SAMPLE_ID}.sh
+
+  sam_file=${SAMPLE_ID}.sam
+
+  alignment_path=${PWD}/$project_name/alignments/
+  bam_file=${SAMPLE_ID}.bam
 
   # This is all the text being put into the file
   touch $script_file
@@ -39,12 +45,18 @@ while read SAMPLE_ID; do
 #SBATCH --cpus-per-task=$core_num # Request that ncpus be allocated per process.
 #SBATCH --mem=${mem_num}g # Memory pool for all cores (see also --mem-per-cpu)
 
-module load HISAT2/2.0.5
-module load samtools/1.3.1-gcc5.2.0
+cp ${fastq_dir}${fq1} $LOCAL/${fq1}
+cp ${fastq_dir}${fq2} $LOCAL/${fq2}
+cp ${cur_ref} $LOCAL/${cur_ref}
+
+module load HISAT2
+module load samtools
 
 hisat2 -p $core_num --dta -x $cur_ref/hg38_tran -1 $fq1 -2 $fq2 -S $sam_file
 samtools sort -@ $core_num -m 2G -o $bam_file $sam_file
 rm $sam_file
+
+mv $bam_file ${alignment_path}
 
 EOF
 
