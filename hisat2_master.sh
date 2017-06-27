@@ -9,9 +9,6 @@ core_num=${3:-4}
 mem_num=${4:-64}
 
 
-# TODO remove hardcoding ref file
-cur_ref=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_indexed_refs
-#hisat2_refs=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_refs/hg38_tran
 
 
 
@@ -47,7 +44,7 @@ while read SAMPLE_ID; do
 
 cp ${fastq_dir}${fq1} $LOCAL/${fq1}
 cp ${fastq_dir}${fq2} $LOCAL/${fq2}
-cp ${cur_ref} $LOCAL/${cur_ref}
+cp -R ${cur_ref} $LOCAL/${cur_ref}
 
 module load HISAT2
 module load samtools
