@@ -2,8 +2,8 @@
 
 project_name=$1
 sample_ids=$2
-core_num=${3:-8}
-mem_num=${4:-115}
+core_num=${3:-2}
+mem_num=${4:-32}
 
 # Trying to make
 # boiler plate code less
@@ -25,8 +25,9 @@ while read SAMPLE_ID; do
   bam_file=$project_name/alignments/${SAMPLE_ID}.bam
   # Pointsless dir was in original sbatch script
   # might be required for ballgown
-  mkdir -p $project_name/DE_analysis/${SAMPLE_ID}
-  out_abundance_gtf=$project_name/DE_analysis/${SAMPLE_ID}/${SAMPLE_ID}.gtf
+  mkdir -p $project_name/DE_analysis/ballgown/${SAMPLE_ID}
+
+  out_abundance_gtf=$project_name/DE_analysis/ballgown/${SAMPLE_ID}/${SAMPLE_ID}.gtf
 
   # This is all the text being put into the file
   touch $script_file
@@ -38,13 +39,12 @@ while read SAMPLE_ID; do
 #SBATCH -J ${cur_module}
 #SBATCH -o /ihome/dtaylor/del53/slurm_output_logs/out_${cur_module}_%N_%j
 #SBATCH -e /ihome/dtaylor/del53/slurm_error_logs/err_${cur_module}_%N_%j
-#SBATCH --cpus-per-task=1 # Request that ncpus be allocated per process.
+#SBATCH --cpus-per-task=$core_num # Request that ncpus be allocated per process.
 #SBATCH --mem=${mem_num}g # Memory pool for all cores (see also --mem-per-cpu)
 
 module load $cur_module
 
 $cmd_string -e -B -p $core_num -G $merged_gtf -o $out_abundance_gtf $bam_file
-
 
 EOF
 

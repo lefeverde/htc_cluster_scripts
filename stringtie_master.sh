@@ -2,10 +2,10 @@
 
 project_name=$1
 sample_ids=$2
+core_num=${3:-8}
+mem_num=${4:-115}
 
-# Trying to make
-# boiler plate code less
-# hardcoded
+
 cur_module=StringTie
 cmd_string=stringtie
 
@@ -35,12 +35,13 @@ while read SAMPLE_ID; do
 #SBATCH -J ${cur_module}_${SAMPLE_ID}
 #SBATCH -o /ihome/dtaylor/del53/slurm_output_logs/out_${cur_module}_${SAMPLE_ID}_%N_%j
 #SBATCH -e /ihome/dtaylor/del53/slurm_error_logs/err_${cur_module}_${SAMPLE_ID}_%N_%j
-#SBATCH --cpus-per-task=16 # Request that ncpus be allocated per process.
-#SBATCH --mem=230g # Memory pool for all cores (see also --mem-per-cpu)
+#SBATCH --cpus-per-task=$core_num # Request that ncpus be allocated per process.
+#SBATCH --mem=${mem_num}g # Memory pool for all cores (see also --mem-per-cpu)
+
 
 module load $cur_module
 
-$cmd_string -p 16 -G $ref_gtf -o $out_gtf -l ${SAMPLE_ID} $bam_in
+$cmd_string -p $core_num -G $ref_gtf -o $out_gtf -l ${SAMPLE_ID} $bam_in
 
 EOF
 

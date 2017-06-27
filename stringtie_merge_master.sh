@@ -2,10 +2,12 @@
 
 project_name=$1
 merge_list=$2
+# TODO figure out easy way to input fq1 and fq2 without
+# needing to use a sample id list
+core_num=${3:-6}
+mem_num=${4:-96}
 
-# Trying to make
-# boiler plate code less
-# hardcoded
+
 cur_module=StringTie
 cmd_string=stringtie
 
@@ -21,12 +23,12 @@ cat > $script_file <<EOF
 #SBATCH -J ${cur_module}
 #SBATCH -o /ihome/dtaylor/del53/slurm_output_logs/out_${cur_module}_%N_%j
 #SBATCH -e /ihome/dtaylor/del53/slurm_error_logs/err_${cur_module}_%N_%j
-#SBATCH --cpus-per-task=8 # Request that ncpus be allocated per process.
-#SBATCH --mem=115g # Memory pool for all cores (see also --mem-per-cpu)
+#SBATCH --cpus-per-task=$core_num # Request that ncpus be allocated per process.
+#SBATCH --mem=${mem_num}g # Memory pool for all cores (see also --mem-per-cpu)
 
 module load $cur_module
 
-$cmd_string --merge -p 8 -G $ref_gtf -o $out_gtf $bam_in
+$cmd_string --merge -p $core_num -G $ref_gtf -o $out_gtf $bam_in
 
 EOF
 

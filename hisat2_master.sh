@@ -1,12 +1,19 @@
 #!/bin/bash
 
+# Args
 project_name=$1
 sample_ids=$2
+# TODO figure out easy way to input fq1 and fq2 without
+# needing to use a sample id list
+core_num=${3:-4}
+mem_num=${4:-64}
+
+
+# TODO remove hardcoding ref file
 cur_ref=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_indexed_refs
 #hisat2_refs=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs/hisat2_refs/hg38_tran
-# TODO figure out easy way to
-# input fq1 and fq2 without
-# needing to use a sample id list
+
+
 
 while read SAMPLE_ID; do
   # idea for master script was taken from:
@@ -29,14 +36,15 @@ while read SAMPLE_ID; do
 #SBATCH -J hisat2_${SAMPLE_ID}
 #SBATCH -o /ihome/dtaylor/del53/slurm_output_logs/out_hisat2_${SAMPLE_ID}_%N_%j
 #SBATCH -e /ihome/dtaylor/del53/slurm_error_logs/err_hisat2_${SAMPLE_ID}_%N_%j
-#SBATCH --cpus-per-task=16 # Request that ncpus be allocated per process.
-#SBATCH --mem=230g # Memory pool for all cores (see also --mem-per-cpu)
+#SBATCH --cpus-per-task=$core_num # Request that ncpus be allocated per process.
+#SBATCH --mem=${mem_num}g # Memory pool for all cores (see also --mem-per-cpu)
 
 module load HISAT2/2.0.5
 module load samtools/1.3.1-gcc5.2.0
 
-hisat2 -p 16 --dta -x $cur_ref/hg38_tran -1 $fq1 -2 $fq2 -S $sam_file
-samtools sort -@ 16 -m 2G -o $bam_file $sam_file
+hisat2 -p $core_num --dta -x $cur_ref/hg38_tran -1 $fq1 -2 $fq2 -S $sam_file
+samtools sort -@ $core_num -m 2G -o $bam_file $sam_file
+rm $sam_file
 
 EOF
 
