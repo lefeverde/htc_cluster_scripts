@@ -7,7 +7,10 @@ sample_ids=$2
 # needing to use a sample id list
 core_num=${3:-4}
 mem_num=${4:-64}
+cur_ref=${5:-hisat2_indexed_refs}
 
+# TODO remove hardcoding ref file
+ref_path=/mnt/mobydisk/groupshares/dtaylor/del53/genome_refs
 
 
 
@@ -19,8 +22,8 @@ while read SAMPLE_ID; do
   # fastq PE set
   fastq_dir=${PWD}/${project_name}/data/ # breakin fp and file
 
-  fq1=${SAMPLE_ID}_1.fastq.gz
-  fq2=${SAMPLE_ID}_2.fastq.gz
+  fq1=${SAMPLE_ID}_R1_001.fastq.gz
+  fq2=${SAMPLE_ID}_R2_001.fastq.gz
 
   script_file=${PWD}/$project_name/alignments/scripts/hisat2_${SAMPLE_ID}.sh
 
@@ -42,9 +45,12 @@ while read SAMPLE_ID; do
 #SBATCH --cpus-per-task=$core_num # Request that ncpus be allocated per process.
 #SBATCH --mem=${mem_num}g # Memory pool for all cores (see also --mem-per-cpu)
 
-cp ${fastq_dir}${fq1} $LOCAL/${fq1}
-cp ${fastq_dir}${fq2} $LOCAL/${fq2}
-cp -R ${cur_ref} $LOCAL/${cur_ref}
+
+cp ${fastq_dir}${fq1} \$LOCAL
+cp ${fastq_dir}${fq2} \$LOCAL
+cp -R ${ref_path}/${cur_ref} \$LOCAL
+
+cd \$LOCAL
 
 module load HISAT2
 module load samtools

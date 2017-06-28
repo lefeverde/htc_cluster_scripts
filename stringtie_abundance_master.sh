@@ -3,7 +3,7 @@
 project_name=$1
 sample_ids=$2
 core_num=${3:-2}
-mem_num=${4:-32}
+mem_num=${4:-16}
 
 # Trying to make
 # boiler plate code less
@@ -35,7 +35,7 @@ while read SAMPLE_ID; do
 #!/bin/bash
 #
 #SBATCH -N 1 # Ensure that all cores are on one machine
-#SBATCH -t 3-00:00 # Runtime in D-HH:MM
+#SBATCH -t 0-03:00 # Runtime in D-HH:MM
 #SBATCH -J ${cur_module}
 #SBATCH -o /ihome/dtaylor/del53/slurm_output_logs/out_${cur_module}_%N_%j
 #SBATCH -e /ihome/dtaylor/del53/slurm_error_logs/err_${cur_module}_%N_%j
